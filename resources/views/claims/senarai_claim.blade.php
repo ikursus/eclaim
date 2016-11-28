@@ -6,6 +6,8 @@
 <a href="{{ url('user/claims/add') }}" class="btn btn-primary">New Claim</a>
 </p>
 
+@if ( count( $senarai_claims ) )
+
 <table class="table table-bordered table-hover">
 
 <thead>
@@ -22,9 +24,11 @@
 </thead>
 
 <tbody>
+
+  @foreach( $senarai_claims as $key => $value )
   <tr>
-    <td>1</th>
-    <td>Contoh Claim 1</td>
+    <td>{{ $key }}</th>
+    <td>{{ $value }}</td>
     <td>2016-11-28</td>
     <td>2016-11-30</td>
     <td>300.00</td>
@@ -32,9 +36,13 @@
     <td>Pending</td>
     <td><a href="{{ url('user/claims/1') }}" class="btn btn-xs btn-info">Lihat</a></td>
   </tr>
+  @endforeach
+
 </tbody>
 
 </table>
+@endif
+
 @endsection
 
 @section('footer')

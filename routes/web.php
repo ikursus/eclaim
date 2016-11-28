@@ -14,29 +14,15 @@ Route::group( ['prefix' => 'user'], function() {
   Route::get('dashboard', 'HomeController@index');
 
   // Route senarai claims user
-  Route::get('claims', function() {
-    return view('claims/senarai_claim');
-  });
+  Route::get('claims', 'ClaimsController@index');
 
   // Route papar borang claim
-  Route::get('claims/add', function() {
-    return view('claims/borang_claim');
-  });
+  Route::get('claims/add', 'ClaimsController@create');
 
   // Route hantar borang claim
-  Route::post('claims/add', function() {
-    return redirect('user/claims');
-  });
+  Route::post('claims/add', 'ClaimsController@store');
 
   // Route detail claim pilihan berdasarkan ID
-  Route::get('claims/{id}', function($id) {
-
-    $name = '<strong>Ali Baba</strong>';
-
-    // $array = ['id' => $id, 'name' => $name ];
-    // return view('claims/detail_claim', $array );
-
-    return view('claims/detail_claim', compact('id', 'name') );
-  });
+  Route::get('claims/{id}', 'ClaimsController@show');
 
 }); // Tutup Route::group() user.
