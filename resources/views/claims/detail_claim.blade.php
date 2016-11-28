@@ -1,31 +1,51 @@
-<h1>Detail Claim User ID {{ $id }}</h1>
+@extends('layouts/app')
 
-<h2>{{ $name }}</h2>
+@section('kandungan_page')
 
-<table>
+<p>
+<a href="{{ url('user/claims') }}" class="btn btn-primary">Senarai Claims</a>
+</p>
+
+<table class="table">
 
 <thead>
   <tr>
-    <th>ID</th>
-    <th>Title</th>
-    <th>Tarikh Mula</th>
-    <th>Tarikh Tamat</th>
-    <th>Amount (RM)</th>
-    <th>Nota</th>
-    <th>Status</th>
+    <th>Item</th>
+    <th>Value</th>
   </tr>
 </thead>
 
 <tbody>
   <tr>
-    <th>1</th>
-    <th>Contoh Claim 1</th>
-    <th>2016-11-28</th>
-    <th>2016-11-30</th>
-    <th>300.00</th>
-    <th>Claim perjalanan</th>
-    <th>Pending</th>
+    <td>ID</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>Title</td>
+    <td>Contoh Claim 1</td>
+  </tr>
+  <tr>
+    <td>Tarikh Mula</td>
+    <td>2016-11-28</td>
+  </tr>
+  <tr>
+    <td>Tarikh Tamat</td>
+    <td>2016-12-01</td>
+  </tr>
+  <tr>
+    <td>Claim Amount (RM)</td>
+    <td>300.00</td>
+  </tr>
+  <tr>
+    <td>Nota</td>
+    <td>Contoh Nota</td>
+  </tr>
+  <tr>
+    <td>Status</td>
+    <td>Pending</td>
   </tr>
 </tbody>
 
 </table>
+
+@endsection

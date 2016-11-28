@@ -17,18 +17,20 @@
     <th>Amount (RM)</th>
     <th>Nota</th>
     <th>Status</th>
+    <th>Tindakan</th>
   </tr>
 </thead>
 
 <tbody>
   <tr>
-    <th>1</th>
-    <th>Contoh Claim 1</th>
-    <th>2016-11-28</th>
-    <th>2016-11-30</th>
-    <th>300.00</th>
-    <th>Claim perjalanan</th>
-    <th>Pending</th>
+    <td>1</th>
+    <td>Contoh Claim 1</td>
+    <td>2016-11-28</td>
+    <td>2016-11-30</td>
+    <td>300.00</td>
+    <td>Claim perjalanan</td>
+    <td>Pending</td>
+    <td><a href="{{ url('user/claims/1') }}" class="btn btn-xs btn-info">Lihat</a></td>
   </tr>
 </tbody>
 
