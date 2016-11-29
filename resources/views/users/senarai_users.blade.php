@@ -37,6 +37,13 @@
       <td>{{ $key->department_name }}</td>
       <td>
         <a href="{{ url('admin/users/' . $key->id ) }}" class="btn btn-xs btn-info">Edit</a>
+
+        <form method="POST" action="{{ route('deleteUser', ['id' => $key->id ]) }}">
+          {{ csrf_field() }}
+          <input type="hidden" name="_method" value="DELETE">
+          <button type="submit" class="btn btn-xs btn-danger">Delete</button>
+        </form>
+
       </td>
     </tr>
     @endforeach

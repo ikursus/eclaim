@@ -1,8 +1,6 @@
 <?php
 // Route homepage
-Route::get('/', function () {
-    return 'Selamat Datang Ke Laravel!';
-});
+Route::get('/', 'HomeController@index');
 
 // Route Login
 Auth::routes();
@@ -11,7 +9,7 @@ Auth::routes();
 Route::group( ['prefix' => 'user'], function() {
 
   // Route dashboard user
-  Route::get('dashboard', 'HomeController@index');
+  Route::get('dashboard', 'HomeController@dashboard');
 
   // Route senarai claims user
   Route::get('claims', 'ClaimsController@index');
@@ -43,7 +41,31 @@ Route::group( ['prefix' => 'admin'], function() {
   // Route terima data dari borang tambah user
   Route::post('users/add', 'UsersController@store');
 
-  // Route detail claim pilihan berdasarkan ID
+  // Route detail user pilihan berdasarkan ID
   Route::get('users/{id}', 'UsersController@edit');
+
+  // Route untuk kemaskini rekod user ID yang dipilih
+  Route::patch('users/{id}', 'UsersController@update');
+
+  Route::delete('users/{id}', 'UsersController@destroy')->name('deleteUser');
+
+
+  // Route senarai department
+  Route::get('departments', 'DepartmentsController@index');
+
+  // Route papar borang tambah department
+  Route::get('departments/add', 'DepartmentsController@create')->name('addDepartment');
+
+  // Route terima data dari borang tambah department
+  Route::post('departments/add', 'DepartmentsController@store')->name('storeDepartment');
+
+  // Route detail department pilihan berdasarkan ID
+  Route::get('departments/{id}', 'DepartmentsController@edit')->name('editDepartment');
+
+  // Route untuk kemaskini rekod department ID yang dipilih
+  Route::patch('departments/{id}', 'DepartmentsController@update')->name('updateDepartment');
+
+  // Route untuk hapuskan department
+  Route::delete('departments/{id}', 'DepartmentsController@destroy')->name('deleteDepartment');
 
 }); // Tutup Route::group() user.
