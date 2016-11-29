@@ -26,3 +26,24 @@ Route::group( ['prefix' => 'user'], function() {
   Route::get('claims/{id}', 'ClaimsController@show');
 
 }); // Tutup Route::group() user.
+
+
+// Route group untuk user
+Route::group( ['prefix' => 'admin'], function() {
+
+  // Route dashboard user
+  Route::get('dashboard', 'HomeController@index');
+
+  // Route senarai user
+  Route::get('users', 'UsersController@index');
+
+  // Route papar borang tambah user
+  Route::get('users/add', 'UsersController@create');
+
+  // Route terima data dari borang tambah user
+  Route::post('users/add', 'UsersController@store');
+
+  // Route detail claim pilihan berdasarkan ID
+  Route::get('users/{id}', 'UsersController@edit');
+
+}); // Tutup Route::group() user.

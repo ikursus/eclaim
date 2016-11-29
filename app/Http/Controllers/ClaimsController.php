@@ -39,7 +39,21 @@ class ClaimsController extends Controller
      */
     public function store(Request $request)
     {
-        return redirect('user/claims');
+      // Validation
+      $this->validate( $request, [
+        'title' => 'required',
+        'claim_amount' => 'required|numeric'
+      ] );
+
+      // Untuk terima semua data dari borang,
+      $data = $request->all();
+
+      // Terima data berdasarkan nama input
+      // $data = $request->except('title');
+
+      dd( $data );
+
+        // return redirect('user/claims');
     }
 
     /**
