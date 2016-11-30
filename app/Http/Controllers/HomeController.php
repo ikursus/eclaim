@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Auth;
+
 class HomeController extends Controller
 {
     /**
@@ -23,7 +25,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('homepage');
+      // Semak adakah pengguna telah login?
+      if ( Auth::check() )
+      {
+        // Jika ya, maka redirect ke dashboard user
+        return redirect('user/dashboard');
+      }
+
+      // Paparkan template homepage jika pengguna belum lagi login
+      return view('homepage');
     }
 
 

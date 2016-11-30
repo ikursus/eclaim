@@ -26,6 +26,10 @@
     <td>{{ $claim->id }}</td>
   </tr>
   <tr>
+    <td>Pemohon Claim</td>
+    <td>{{ $claim->user->name }}</td>
+  </tr>
+  <tr>
     <td>Title</td>
     <td>{{ $claim->title }}</td>
   </tr>

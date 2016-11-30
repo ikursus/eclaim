@@ -10,11 +10,42 @@
 
 @if ( count( $claims ) )
 
+<hr>
+
+<div class="row">
+  <div class="col-md-4">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">Pending Claims</div>
+      <div class="panel-body">
+        {{ $claims_pending }}
+      </div>
+    </div>
+
+  </div>
+  <div class="col-md-4">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">Approved Claims</div>
+      <div class="panel-body">
+        {{ $claims_approved }}
+      </div>
+    </div>
+
+  </div>
+  <div class="col-md-4">
+  </div>
+</div>
+
+<hr>
+
+<div class="table-responsive">
 <table class="table table-bordered table-hover">
 
 <thead>
   <tr class="active">
     <th>ID</th>
+    <th>Pemohon</th>
     <th>Title</th>
     <th>Start Date</th>
     <th>End Date</th>
@@ -30,6 +61,11 @@
   @foreach( $claims as $key )
   <tr>
     <td>{{ $key->id }}</th>
+    <td>
+      @if ( $key->user )
+      {{ $key->user->name }}
+      @endif
+    </th>
     <td>{{ $key->title }}</td>
     <td>{{ $key->start_date }}</td>
     <td>{{ $key->end_date }}</td>
@@ -91,6 +127,7 @@
 </tbody>
 
 </table>
+</div><!--tutup table responsive -->
 @endif
 
 @endsection

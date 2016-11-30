@@ -29,8 +29,12 @@ class ClaimsController extends Controller
         $claims = Claim::where('user_id', $user->id)->paginate(10);
       }
 
+      // Senarai jumlah claim berdasarkan status
+      $claims_pending = Claim::whereStatus('pending')->sum('amount');
+      $claims_approved = Claim::whereStatus('approved')->sum('amount');
 
-      return view('claims/senarai_claims', compact('claims', 'user') );
+      // Paparkan template senarai claims bersama variable $claims dan $user
+      return view('claims/senarai_claims', compact('claims', 'user', 'claims_pending', 'claims_approved') );
     }
 
     /**
@@ -86,8 +90,9 @@ class ClaimsController extends Controller
       // Dapatkan detail user yang sedang login
       $user = Auth::user();
 
-      // Dapatkan maklumat Claim yang dipilih dan pastikan ia memang milik user
-      // yang sedang login
+      // Dapatkan maklumat Claim yang ingin dilihat dan semak role user
+      // Jika admin, benarkan untuk lihat mana - mana claim
+      // Jika bukan admin, hanya benarkan lihat claim sendiri saja.
       if ( $user->role == 'admin' )
       {
         $claim = Claim::find($id);
@@ -99,7 +104,7 @@ class ClaimsController extends Controller
         ->first();
       }
 
-
+      // Paparkan template detail claim dan compact variable user dan claim
       return view('claims/detail_claim', compact('user', 'claim') );
     }
 

@@ -18,5 +18,10 @@ class Claim extends Model
     'status'
   ];
 
+  public function user()
+  {
+    return $this->belongsTo('App\User');
+  }
+
 
 }
