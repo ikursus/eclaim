@@ -141,6 +141,9 @@ class ClaimsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Delete claim
+        Claim::find($id)->delete();
+
+        return redirect()->back()->with('success', 'Rekod claim telah dihapuskan.');
     }
 }
