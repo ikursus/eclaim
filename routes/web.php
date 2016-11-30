@@ -47,8 +47,11 @@ Route::group( ['prefix' => 'admin', 'middleware' => 'auth'], function() {
   // Route terima data dari borang tambah user
   Route::post('users/add', 'UsersController@store');
 
-  // Route detail user pilihan berdasarkan ID
-  Route::get('users/{id}', 'UsersController@edit');
+  // Route edit detail user pilihan berdasarkan ID
+  Route::get('users/{id}', 'UsersController@show')->name('detailUser');
+
+  // Route edit detail user pilihan berdasarkan ID
+  Route::get('users/{id}/edit', 'UsersController@edit')->name('editUser');
 
   // Route untuk kemaskini rekod user ID yang dipilih
   Route::patch('users/{id}', 'UsersController@update');

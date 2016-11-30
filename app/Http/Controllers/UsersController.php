@@ -88,7 +88,10 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        //
+        // Dapatkan rekod user
+        $user = User::find($id);
+
+        return view('users/detail_user', compact('user') );
     }
 
     /**

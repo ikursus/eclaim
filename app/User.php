@@ -38,4 +38,9 @@ class User extends Authenticatable
     {
       return $this->hasMany('App\Claim');
     }
+
+    public function claimsPending()
+    {
+      return $this->hasMany('App\Claim')->where('status', 'pending');
+    }
 }

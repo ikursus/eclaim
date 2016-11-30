@@ -36,7 +36,10 @@
       <td>{{ $key->role }}</td>
       <td>{{ $key->department_name }}</td>
       <td>
-        <a href="{{ url('admin/users/' . $key->id ) }}" class="btn btn-xs btn-info">Edit</a>
+
+        <a href="{{ route('detailUser', ['id' => $key->id ]) }}" class="btn btn-xs btn-primary">Show</a>
+
+        <a href="{{ route('editUser', ['id' => $key->id ]) }}" class="btn btn-xs btn-info">Edit</a>
 
         <form method="POST" action="{{ route('deleteUser', ['id' => $key->id ]) }}">
           {{ csrf_field() }}
