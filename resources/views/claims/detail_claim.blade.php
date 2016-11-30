@@ -2,14 +2,19 @@
 
 @section('kandungan_page')
 
+@include('errors.alerts')
+
 <p>
 <a href="{{ url('user/claims') }}" class="btn btn-primary">Senarai Claims</a>
 </p>
 
-<table class="table">
+@if ( count( $claim ) )
+<p>Berikut adalah maklumat claim yang telah {{ $user->name }} kirimkan.</p>
+
+<table class="table table-bordered table-hover">
 
 <thead>
-  <tr>
+  <tr class="active">
     <th>Item</th>
     <th>Value</th>
   </tr>
@@ -17,35 +22,53 @@
 
 <tbody>
   <tr>
-    <td>ID</td>
-    <td>1</td>
+    <td>ID Claim</td>
+    <td>{{ $claim->id }}</td>
   </tr>
   <tr>
     <td>Title</td>
-    <td>Contoh Claim 1</td>
+    <td>{{ $claim->title }}</td>
   </tr>
   <tr>
-    <td>Tarikh Mula</td>
-    <td>2016-11-28</td>
+    <td>Start Date</td>
+    <td>{{ $claim->start_date }}</td>
   </tr>
   <tr>
-    <td>Tarikh Tamat</td>
-    <td>2016-12-01</td>
+    <td>End Date</td>
+    <td>{{ $claim->end_date }}</td>
   </tr>
   <tr>
-    <td>Claim Amount (RM)</td>
-    <td>300.00</td>
+    <td>Claim Amount</td>
+    <td>RM{{ $claim->amount }}</td>
   </tr>
   <tr>
-    <td>Nota</td>
-    <td>Contoh Nota</td>
+    <td>Claim Detail</td>
+    <td>{{ $claim->detail }}</td>
   </tr>
   <tr>
-    <td>Status</td>
-    <td>Pending</td>
+    <td>Note</td>
+    <td>{{ $claim->note }}</td>
+  </tr>
+  <tr>
+    <td>Claim Status</td>
+    <td>
+      @if ( $claim->status == 'pending' )
+      <span class="btn btn-sm btn-warning">{{ ucwords( $claim->status ) }}</span>
+      @else
+      <span class="btn btn-sm btn-success">{{ ucwords( $claim->status ) }}</span>
+      @endif
+    </td>
   </tr>
 </tbody>
 
 </table>
+
+@else
+
+<div class="alert alert-info">
+  Tiada rekod claim dijumpai.
+</div>
+
+@endif
 
 @endsection

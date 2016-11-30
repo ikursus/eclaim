@@ -4,34 +4,39 @@
 
 @include('errors/alerts')
 
-<form method="POST" action="<?php echo url()->current(); ?>">
+<form method="POST" action="{{ route('storeClaim') }}">
 
   <?php echo csrf_field(); ?>
 
 <div class="form-group{{ $errors->first('title', ' has-error') }}">
-  <label>Tajuk Claim</label>
+  <label>Claim Title</label>
   <input type="text" name="title" class="form-control" value="{{ old('title') }}">
   <span class="help-block">{{ $errors->first('title') }}</span>
 </div>
 
 <div class="form-group">
-  <label>Tarikh Mula</label>
-  <input type="date" name="tarikh_mula" class="form-control" value="{{ old('tarikh_mula') }}">
+  <label>Start Date</label>
+  <input type="date" name="start_date" class="form-control" value="{{ old('start_date') }}">
 </div>
 
 <div class="form-group">
-  <label>Tarikh Tamat</label>
-  <input type="date" name="tarikh_tamat" class="form-control" value="{{ old('tarikh_tamat') }}">
+  <label>End Date</label>
+  <input type="date" name="end_date" class="form-control" value="{{ old('end_date') }}">
 </div>
 
 <div class="form-group">
   <label>Claim Amount</label>
-  <input type="text" name="claim_amount" class="form-control" value="{{ old('claim_amount') }}">
+  <input type="text" name="amount" class="form-control" value="{{ old('amount') }}">
 </div>
 
 <div class="form-group">
-  <label>Nota</label>
-  <textarea name="notes" class="form-control">{{ old('notes') }}</textarea>
+  <label>Detail</label>
+  <textarea name="detail" class="form-control">{{ old('detail') }}</textarea>
+</div>
+
+<div class="form-group">
+  <label>Note</label>
+  <textarea name="note" class="form-control">{{ old('note') }}</textarea>
 </div>
 
 <button type="submit" class="btn btn-primary">Hantar Claim</button>

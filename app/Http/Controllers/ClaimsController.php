@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Auth;
+use App\Claim;
+
 class ClaimsController extends Controller
 {
     /**
@@ -13,12 +16,21 @@ class ClaimsController extends Controller
      */
     public function index()
     {
-      $senarai_claims = [
-        '1' => 'Contoh 1',
-        '2' => 'Contoh 2'
-      ];
+      // Dapatkan rekod user yang sedang login
+      $user = Auth::user();
 
-      return view('claims/senarai_claim', compact('senarai_claims') );
+      // Dapatkan rekod senarai claim berdasarkan role user
+      if ( $user->role == 'admin' )
+      {
+        $claims = Claim::paginate(10);
+      }
+      else
+      {
+        $claims = Claim::where('user_id', $user->id)->paginate(10);
+      }
+
+
+      return view('claims/senarai_claims', compact('claims', 'user') );
     }
 
     /**
@@ -28,7 +40,8 @@ class ClaimsController extends Controller
      */
     public function create()
     {
-        return view('claims/borang_claim');
+      // Papar borang hantar claim
+      return view('claims/borang_claim');
     }
 
     /**
@@ -41,19 +54,25 @@ class ClaimsController extends Controller
     {
       // Validation
       $this->validate( $request, [
-        'title' => 'required',
-        'claim_amount' => 'required|numeric'
+        'title' => 'required|min:3',
+        'start_date' => 'required|date',
+        'end_date' => 'required|date',
+        'amount' => 'required|numeric',
+        'detail' => 'required|min:3'
       ] );
 
-      // Untuk terima semua data dari borang,
+      // Tetapkan variable yang menerima semua input dari borang
       $data = $request->all();
 
-      // Terima data berdasarkan nama input
-      // $data = $request->except('title');
+      // Tambah maklumat data array ke variable $data
+      $data['user_id'] = Auth::user()->id;
+      $data['status'] = 'pending';
 
-      dd( $data );
+      // Simpan rekod ke dalam table claims
+      $claim = Claim::create( $data );
 
-        // return redirect('user/claims');
+      // Redirect ke halaman status claim
+      return redirect('user/claims')->with('success', 'Claim anda sedang diproses.');
     }
 
     /**
@@ -64,12 +83,24 @@ class ClaimsController extends Controller
      */
     public function show($id)
     {
-      $name = '<strong>Ali Baba</strong>';
+      // Dapatkan detail user yang sedang login
+      $user = Auth::user();
 
-      // $array = ['id' => $id, 'name' => $name ];
-      // return view('claims/detail_claim', $array );
+      // Dapatkan maklumat Claim yang dipilih dan pastikan ia memang milik user
+      // yang sedang login
+      if ( $user->role == 'admin' )
+      {
+        $claim = Claim::find($id);
+      }
+      else
+      {
+        $claim = Claim::where('id', $id)
+        ->where('user_id', $user->id)
+        ->first();
+      }
 
-      return view('claims/detail_claim', compact('id', 'name') );
+
+      return view('claims/detail_claim', compact('user', 'claim') );
     }
 
     /**

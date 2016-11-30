@@ -6,7 +6,7 @@ Route::get('/', 'HomeController@index');
 Auth::routes();
 
 // Route group untuk user
-Route::group( ['prefix' => 'user'], function() {
+Route::group( ['prefix' => 'user', 'middleware' => 'auth'], function() {
 
   // Route dashboard user
   Route::get('dashboard', 'HomeController@dashboard');
@@ -18,16 +18,19 @@ Route::group( ['prefix' => 'user'], function() {
   Route::get('claims/add', 'ClaimsController@create');
 
   // Route hantar borang claim
-  Route::post('claims/add', 'ClaimsController@store');
+  Route::post('claims/add', 'ClaimsController@store')->name('storeClaim');
 
   // Route detail claim pilihan berdasarkan ID
-  Route::get('claims/{id}', 'ClaimsController@show');
+  Route::get('claims/{id}', 'ClaimsController@show')->name('showClaim');
+
+  // Route delete claim pilihan berdasarkan ID
+  Route::delete('claims/{id}', 'ClaimsController@destroy')->name('deleteClaim');
 
 }); // Tutup Route::group() user.
 
 
 // Route group untuk user
-Route::group( ['prefix' => 'admin'], function() {
+Route::group( ['prefix' => 'admin', 'middleware' => 'auth'], function() {
 
   // Route dashboard user
   Route::get('dashboard', 'HomeController@index');
