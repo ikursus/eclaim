@@ -2,6 +2,8 @@
 
 @section('kandungan_page')
 
+@include('errors.alerts')
+
 <p>
 <a href="{{ url('user/claims/add') }}" class="btn btn-primary">New Claim</a>
 </p>
@@ -48,12 +50,38 @@
 
       @if ( $user->role == 'admin' )
 
-      <form method="POST" action="{{ route('deleteClaim', ['id' => $key->id ]) }}">
-        {{ csrf_field() }}
-        <input type="hidden" name="_method" value="DELETE">
-        <button type="submit" class="btn btn-xs btn-danger">Delete</button>
-      </form>
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#delete-{{ $key->id }}">
+          Delete
+      </button>
 
+      <!-- Modal -->
+      <form method="POST" action="{{ route('deleteClaim', ['id' => $key->id ]) }}">
+
+      <div class="modal fade" id="delete-{{ $key->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Delete Confirmation</h4>
+            </div>
+            <div class="modal-body">
+
+              <p>Are you sure you want to delete this item? ID: {{ $key->id }}</p>
+              {{ csrf_field() }}
+              <input type="hidden" name="_method" value="DELETE">
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-danger">Confirm Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </form>
+      <!-- Modal -->
       @endif
 
     </td>
