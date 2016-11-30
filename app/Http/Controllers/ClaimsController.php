@@ -72,7 +72,7 @@ class ClaimsController extends Controller
       $claim = Claim::create( $data );
 
       // Redirect ke halaman status claim
-      return redirect('user/claims')->with('success', 'Claim anda sedang diproses.');
+      return redirect('user/claims/' . $claim->id )->with('success', 'Claim anda sedang diproses.');
     }
 
     /**
@@ -123,7 +123,14 @@ class ClaimsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Tetapkan data untuk di update ke table Claim
+        $data['status'] = $request->input('status');
+
+        // Update rekod
+        Claim::find($id)->update( $data );
+
+        // Redirect ke halaman sedia ada
+        return redirect()->back()->with('success', 'Rekod claim telah dikemaskini');
     }
 
     /**

@@ -23,6 +23,9 @@ Route::group( ['prefix' => 'user', 'middleware' => 'auth'], function() {
   // Route detail claim pilihan berdasarkan ID
   Route::get('claims/{id}', 'ClaimsController@show')->name('showClaim');
 
+  // Route approve claim oleh admin
+  Route::patch('claims/{id}', 'ClaimsController@update')->name('updateClaim');
+
   // Route delete claim pilihan berdasarkan ID
   Route::delete('claims/{id}', 'ClaimsController@destroy')->name('deleteClaim');
 

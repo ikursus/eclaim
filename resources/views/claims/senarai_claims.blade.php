@@ -36,6 +36,8 @@
     <td>
       @if ( $key->status == 'pending' )
       <span class="btn btn-xs btn-warning">{{ ucwords( $key->status ) }}</span>
+      @elseif ( $key->status == 'cancelled' )
+      <span class="btn btn-xs btn-default">{{ ucwords( $key->status ) }}</span>
       @else
       <span class="btn btn-xs btn-success">{{ ucwords( $key->status ) }}</span>
       @endif

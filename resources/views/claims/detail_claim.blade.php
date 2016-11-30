@@ -59,6 +59,33 @@
       @endif
     </td>
   </tr>
+
+  @if ( $user->role == 'admin' )
+
+  <tr>
+    <td>Action (for Admin)</td>
+    <td>
+
+      <form method="POST" action="{{ route('updateClaim', ['id' => $claim->id]) }}">
+        {{ csrf_field() }}
+        <input type="hidden" name="_method" value="PATCH">
+
+        <div class="form-group">
+          <select name="status" class="form-control">
+            <option value="approved">Approved</option>
+            <option value="cancelled">Cancelled</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-sm btn-primary">Update</button>
+      </form>
+
+    </td>
+  </tr>
+
+  @endif
+
 </tbody>
 
 </table>
