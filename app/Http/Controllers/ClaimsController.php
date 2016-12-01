@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use Auth;
 use App\Claim;
+use DB;
+use Datatables;
 
 class ClaimsController extends Controller
 {
@@ -19,22 +21,75 @@ class ClaimsController extends Controller
       // Dapatkan rekod user yang sedang login
       $user = Auth::user();
 
-      // Dapatkan rekod senarai claim berdasarkan role user
-      if ( $user->role == 'admin' )
-      {
-        $claims = Claim::paginate(10);
-      }
-      else
-      {
-        $claims = Claim::where('user_id', $user->id)->paginate(10);
-      }
-
       // Senarai jumlah claim berdasarkan status
       $claims_pending = Claim::whereStatus('pending')->sum('amount');
       $claims_approved = Claim::whereStatus('approved')->sum('amount');
 
       // Paparkan template senarai claims bersama variable $claims dan $user
-      return view('claims/senarai_claims', compact('claims', 'user', 'claims_pending', 'claims_approved') );
+      return view('claims/senarai_claims', compact('user', 'claims_pending', 'claims_approved') );
+    }
+
+    public function datatables()
+    {
+      // Dapatkan rekod user yang sedang login
+      $user = Auth::user();
+
+      // Dapatkan rekod senarai claim berdasarkan role user
+      if ( $user->role == 'admin' )
+      {
+        $claims = DB::table('claims')->join('users', 'claims.user_id', '=', 'users.id')
+        ->select('claims.id', 'claims.title', 'claims.start_date', 'claims.end_date', 'claims.amount', 'claims.detail', 'claims.status', 'users.name');
+      }
+      else
+      {
+        $claims = DB::table('claims')->join('users', 'claims.user_id', '=', 'users.id')
+        ->where('claims.user_id', '=', $user->id)
+        ->select('claims.id', 'claims.title', 'claims.start_date', 'claims.end_date', 'claims.amount', 'claims.detail', 'claims.status', 'users.name');
+      }
+
+      // Return response
+      return Datatables::of( $claims )
+      ->addColumn('action', function($key)
+      {
+        return '
+
+        <a href="' . route('showClaim', ['id' => $key->id]) . '" class="btn btn-xs btn-info">Detail</a>
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#delete-' . $key->id . '">
+            Delete
+        </button>
+
+        <!-- Modal -->
+        <form method="POST" action="'. route('deleteClaim', ['id' => $key->id ]) .'">
+
+        <div class="modal fade" id="delete-' . $key->id . '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Delete Confirmation</h4>
+              </div>
+              <div class="modal-body">
+
+                <p>Are you sure you want to delete this item? ID: ' . $key->id . '</p>
+                ' . csrf_field() . '
+                <input type="hidden" name="_method" value="DELETE">
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-danger">Confirm Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        </form>
+        <!-- Modal -->
+        ';
+      })
+      ->make(true);
     }
 
     /**

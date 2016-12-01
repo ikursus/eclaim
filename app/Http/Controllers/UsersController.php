@@ -56,6 +56,7 @@ class UsersController extends Controller
 
         <a href="' . route('detailUser', ['id' => $key->id]) . '" class="btn btn-xs btn-info">Detail</a>
         <a href="' . route('editUser', ['id' => $key->id]) . '" class="btn btn-xs btn-primary">Edit</a>
+
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#delete-' . $key->id . '">
             Delete

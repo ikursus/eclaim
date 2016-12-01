@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Department;
 
+use App\User;
+
 class DepartmentsController extends Controller
 {
     /**
@@ -28,7 +30,7 @@ class DepartmentsController extends Controller
      */
     public function create()
     {
-        return view('departments.borang_tambah_department');
+        return view('departments.borang_tambah_department', compact('users'));
     }
 
     /**

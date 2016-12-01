@@ -4,17 +4,22 @@
 
 @include('errors/alerts')
 
-<form method="POST" action="{{ route('storeDepartment') }}">
 
-  <?php echo csrf_field(); ?>
+  {!! Form::open( ['route' => 'storeDepartment'] ) !!}
+
+
 
 <div class="form-group{{ $errors->first('name', ' has-error') }}">
-  <label>Nama Department</label>
-  <input type="text" name="name" class="form-control" value="{{ old('name') }}">
+
+  {!! Form::label('name', 'Nama Department') !!}
+
+  {!! Form::text('name', null, ['class' => 'form-control']) !!}
+
   <span class="help-block">{{ $errors->first('name') }}</span>
+
 </div>
 
 <button type="submit" class="btn btn-primary">Save</button>
 
-</form>
+{!! Form::close() !!}
 @endsection

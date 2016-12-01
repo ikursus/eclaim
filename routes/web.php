@@ -14,8 +14,11 @@ Route::group( ['prefix' => 'user', 'middleware' => 'auth'], function() {
   // Route senarai claims user
   Route::get('claims', 'ClaimsController@index');
 
+  // Route AJAX claims user
+  Route::get('claims/datatables', 'ClaimsController@datatables')->name('datatablesClaims');
+
   // Route papar borang claim
-  Route::get('claims/add', 'ClaimsController@create');
+  Route::get('claims/add', 'ClaimsController@create')->name('createClaim');
 
   // Route hantar borang claim
   Route::post('claims/add', 'ClaimsController@store')->name('storeClaim');
