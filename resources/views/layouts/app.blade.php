@@ -14,12 +14,7 @@
     <!-- <link href="/css/app.css" rel="stylesheet"> -->
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 
-    <!-- Scripts -->
-    <script>
-        window.Laravel = <?php echo json_encode([
-            'csrfToken' => csrf_token(),
-        ]); ?>
-    </script>
+    @yield('header')
 </head>
 <body>
     <div id="app">
@@ -118,7 +113,12 @@
     </div>
 
     <!-- Scripts -->
-    <script src="/js/app.js"></script>
+    <!-- jQuery -->
+    <script src="//code.jquery.com/jquery.js"></script>
+    <!-- DataTables -->
+    <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
     @yield('footer')
 

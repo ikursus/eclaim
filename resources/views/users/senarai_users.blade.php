@@ -1,5 +1,9 @@
 @extends('layouts/app')
 
+@section('header')
+<link href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css" rel="stylesheet">
+@endsection
+
 @section('kandungan_page')
 
 @include('errors/alerts')
@@ -8,9 +12,8 @@
 <a href="{{ url('admin/users/add') }}" class="btn btn-primary">Tambah User</a>
 </p>
 
-@if ( count( $users ) )
+<table class="table table-bordered" id="users-table">
 
-<table class="table table-bordered">
   <thead>
     <tr>
       <th>ID</th>
@@ -20,44 +23,31 @@
       <th>Designation</th>
       <th>Role</th>
       <th>Department</th>
-      <th>Action</th>
     </tr>
   </thead>
 
-  <tbody>
-
-    @foreach( $users as $key )
-    <tr>
-      <td>{{ $key->id }}</td>
-      <td>{{ $key->name }}</td>
-      <td>{{ $key->username }}</td>
-      <td>{{ $key->phone }}</td>
-      <td>{{ $key->designation }}</td>
-      <td>{{ $key->role }}</td>
-      <td>{{ $key->department_name }}</td>
-      <td>
-
-        <a href="{{ route('detailUser', ['id' => $key->id ]) }}" class="btn btn-xs btn-primary">Show</a>
-
-        <a href="{{ route('editUser', ['id' => $key->id ]) }}" class="btn btn-xs btn-info">Edit</a>
-
-        <form method="POST" action="{{ route('deleteUser', ['id' => $key->id ]) }}">
-          {{ csrf_field() }}
-          <input type="hidden" name="_method" value="DELETE">
-          <button type="submit" class="btn btn-xs btn-danger">Delete</button>
-        </form>
-
-      </td>
-    </tr>
-    @endforeach
-
-  </tbody>
 </table>
 
-{{ $users->links() }}
+@endsection
 
-<p>{{ $users->count() }} orang dari Total users keseluruhan {{ $users->total() }}</p>
-
-@endif
+@section('footer')
+<script>
+$(function() {
+    $('#users-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: '{!! route('datatablesUsers') !!}',
+        columns: [
+            { data: 'id', name: 'id' },
+            { data: 'name', name: 'name' },
+            { data: 'username', name: 'username' },
+            { data: 'phone', name: 'phone' },
+            { data: 'designation', name: 'designation' },
+            { data: 'role', name: 'role' },
+            { data: 'department_id', name: 'department_id' }
+        ]
+    });
+});
+</script>
 
 @endsection

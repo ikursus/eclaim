@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\User;
+use Illuminate\Support\Facades\Mail;
+use Datatables;
+
 
 class UsersController extends Controller
 {
@@ -19,14 +22,24 @@ class UsersController extends Controller
       // $users = DB::table('users')->get();
 
       // Join table users dan departments untuk rekod nama department
-      $users = DB::table('users')
-      ->join('departments', 'users.department_id', '=', 'departments.id')
-      ->select('users.*', 'departments.name as department_name')
-      ->orderBy('id', 'desc')
-      ->paginate(3);
+      // $users = DB::table('users')
+      // ->join('departments', 'users.department_id', '=', 'departments.id')
+      // ->select('users.*', 'departments.name as department_name')
+      // ->orderBy('id', 'desc')
+      // ->paginate(3);
 
       // Paparkan borang senarai users
-      return view('users/senarai_users', compact('users') );
+      // return view('users/senarai_users', compact('users') );
+      return view('users/senarai_users');
+    }
+
+    public function datatables()
+    {
+      // Query data yang ingin dipaparkan pada senarai users
+      $users = User::select('id', 'name', 'username', 'phone', 'designation', 'department_id', 'role');
+
+      // Return response
+      return Datatables::of( $users )->make(true);
     }
 
     /**
@@ -75,6 +88,22 @@ class UsersController extends Controller
 
         // Simpan rekod data ke dalam database
         DB::table('users')->insert( $data );
+
+        // Tetapkan data yang ingin digunakan pada email
+        $data = [
+          'email' => $request->input('email'),
+          'name' => $request->input('name'),
+          'password' => $request->input('password')
+        ];
+
+        // Hantar email ke user
+        Mail::send('emails.new_user', $data, function( $message ) use ( $data )
+        {
+          $message->from('admin@gmail.com', 'Admin Besar');
+          $message->replyTo('support@johndoe.com', 'Support');
+          $message->to( $data['email'],  $data['name']);
+          $message->subject('Hello ' . $data['name'] . ', Akaun telah dihasilkan');
+        });
 
         // Redirect ke halaman senarai user apabila sukses simpan rekod
         return redirect('admin/users')->with('success', 'User berjaya ditambah!');

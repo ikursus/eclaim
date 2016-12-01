@@ -39,6 +39,13 @@
   <textarea name="note" class="form-control">{{ old('note') }}</textarea>
 </div>
 
+@if( $user->role == 'admin' )
+<div class="form-group">
+  <label>Entertainment</label>
+  <textarea name="note" class="form-control">{{ old('note') }}</textarea>
+</div>
+@endif
+
 <button type="submit" class="btn btn-primary">Hantar Claim</button>
 
 </form>

@@ -41,6 +41,9 @@ Route::group( ['prefix' => 'admin', 'middleware' => 'auth'], function() {
   // Route senarai user
   Route::get('users', 'UsersController@index');
 
+  // Ajax request untuk datatabase
+  Route::get('users/datatables', 'UsersController@datatables')->name('datatablesUsers');
+
   // Route papar borang tambah user
   Route::get('users/add', 'UsersController@create');
 
@@ -54,7 +57,7 @@ Route::group( ['prefix' => 'admin', 'middleware' => 'auth'], function() {
   Route::get('users/{id}/edit', 'UsersController@edit')->name('editUser');
 
   // Route untuk kemaskini rekod user ID yang dipilih
-  Route::patch('users/{id}', 'UsersController@update');
+  Route::patch('users/{id}', 'UsersController@update')->name('updateUser');
 
   Route::delete('users/{id}', 'UsersController@destroy')->name('deleteUser');
 

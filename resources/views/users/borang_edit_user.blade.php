@@ -4,7 +4,7 @@
 
 @include('errors/alerts')
 
-<form method="POST" action="{{ url()->current() }}">
+<form method="POST" action="{{ route('updateUser', ['id' => $user->id]) }}">
 
   {{ csrf_field() }}
   <input type="hidden" name="_method" value="PATCH">

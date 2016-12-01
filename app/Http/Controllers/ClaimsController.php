@@ -44,8 +44,9 @@ class ClaimsController extends Controller
      */
     public function create()
     {
+      $user = Auth::user();
       // Papar borang hantar claim
-      return view('claims/borang_claim');
+      return view('claims/borang_claim', compact('user'));
     }
 
     /**
