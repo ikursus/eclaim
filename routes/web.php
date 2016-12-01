@@ -32,52 +32,61 @@ Route::group( ['prefix' => 'user', 'middleware' => 'auth'], function() {
 }); // Tutup Route::group() user.
 
 
-// Route group untuk user
+// Route prefix admin: http://localhost/admin
 Route::group( ['prefix' => 'admin', 'middleware' => 'auth'], function() {
 
   // Route dashboard user
   Route::get('dashboard', 'HomeController@index');
 
-  // Route senarai user
-  Route::get('users', 'UsersController@index');
+  // Route prefix users: http://localhost/admin/users
+  Route::group(['prefix' => 'users'], function() {
 
-  // Ajax request untuk datatabase
-  Route::get('users/datatables', 'UsersController@datatables')->name('datatablesUsers');
+    // Route senarai users
+    Route::get('/', 'UsersController@index');
 
-  // Route papar borang tambah user
-  Route::get('users/add', 'UsersController@create');
+    // Ajax request untuk datatabase
+    Route::get('datatables', 'UsersController@datatables')->name('datatablesUsers');
 
-  // Route terima data dari borang tambah user
-  Route::post('users/add', 'UsersController@store');
+    // Route papar borang tambah user
+    Route::get('add', 'UsersController@create');
 
-  // Route edit detail user pilihan berdasarkan ID
-  Route::get('users/{id}', 'UsersController@show')->name('detailUser');
+    // Route terima data dari borang tambah user
+    Route::post('add', 'UsersController@store');
 
-  // Route edit detail user pilihan berdasarkan ID
-  Route::get('users/{id}/edit', 'UsersController@edit')->name('editUser');
+    // Route edit detail user pilihan berdasarkan ID
+    Route::get('{id}', 'UsersController@show')->name('detailUser');
 
-  // Route untuk kemaskini rekod user ID yang dipilih
-  Route::patch('users/{id}', 'UsersController@update')->name('updateUser');
+    // Route edit detail user pilihan berdasarkan ID
+    Route::get('{id}/edit', 'UsersController@edit')->name('editUser');
 
-  Route::delete('users/{id}', 'UsersController@destroy')->name('deleteUser');
+    // Route untuk kemaskini rekod user ID yang dipilih
+    Route::patch('{id}', 'UsersController@update')->name('updateUser');
+
+    Route::delete('{id}', 'UsersController@destroy')->name('deleteUser');
+  });
 
 
-  // Route senarai department
-  Route::get('departments', 'DepartmentsController@index');
+  // Route prefix departments http://localhost/admin/departments
+  Route::group(['prefix' => 'departments'], function() {
 
-  // Route papar borang tambah department
-  Route::get('departments/add', 'DepartmentsController@create')->name('addDepartment');
+    // Route senarai department
+    Route::get('/', 'DepartmentsController@index');
 
-  // Route terima data dari borang tambah department
-  Route::post('departments/add', 'DepartmentsController@store')->name('storeDepartment');
+    // Route papar borang tambah department
+    Route::get('add', 'DepartmentsController@create')->name('addDepartment');
 
-  // Route detail department pilihan berdasarkan ID
-  Route::get('departments/{id}', 'DepartmentsController@edit')->name('editDepartment');
+    // Route terima data dari borang tambah department
+    Route::post('add', 'DepartmentsController@store')->name('storeDepartment');
 
-  // Route untuk kemaskini rekod department ID yang dipilih
-  Route::patch('departments/{id}', 'DepartmentsController@update')->name('updateDepartment');
+    // Route detail department pilihan berdasarkan ID
+    Route::get('{id}', 'DepartmentsController@edit')->name('editDepartment');
 
-  // Route untuk hapuskan department
-  Route::delete('departments/{id}', 'DepartmentsController@destroy')->name('deleteDepartment');
+    // Route untuk kemaskini rekod department ID yang dipilih
+    Route::patch('{id}', 'DepartmentsController@update')->name('updateDepartment');
+
+    // Route untuk hapuskan department
+    Route::delete('{id}', 'DepartmentsController@destroy')->name('deleteDepartment');
+
+  });
 
 }); // Tutup Route::group() user.

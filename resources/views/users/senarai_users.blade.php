@@ -23,6 +23,7 @@
       <th>Designation</th>
       <th>Role</th>
       <th>Department</th>
+      <th>Actions</th>
     </tr>
   </thead>
 
@@ -38,13 +39,14 @@ $(function() {
         serverSide: true,
         ajax: '{!! route('datatablesUsers') !!}',
         columns: [
-            { data: 'id', name: 'id' },
-            { data: 'name', name: 'name' },
-            { data: 'username', name: 'username' },
-            { data: 'phone', name: 'phone' },
-            { data: 'designation', name: 'designation' },
-            { data: 'role', name: 'role' },
-            { data: 'department_id', name: 'department_id' }
+            { data: 'id', name: 'users.id' },
+            { data: 'name', name: 'users.name' },
+            { data: 'username', name: 'users.username' },
+            { data: 'phone', name: 'users.phone' },
+            { data: 'designation', name: 'users.designation' },
+            { data: 'role', name: 'users.role' },
+            { data: 'department_name', name: 'departments.name' },
+            { data: 'action', name: 'action', orderable: false, searchable: false }
         ]
     });
 });

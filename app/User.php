@@ -34,6 +34,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function department()
+    {
+      return $this->belongsTo('App\Department');
+    }
+
     public function claims()
     {
       return $this->hasMany('App\Claim');

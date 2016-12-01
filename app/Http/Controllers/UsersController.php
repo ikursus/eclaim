@@ -36,10 +36,69 @@ class UsersController extends Controller
     public function datatables()
     {
       // Query data yang ingin dipaparkan pada senarai users
-      $users = User::select('id', 'name', 'username', 'phone', 'designation', 'department_id', 'role');
+      $users = DB::table('users')
+      ->join('departments', 'users.department_id', '=', 'departments.id')
+      ->select(
+        'users.id',
+        'users.name',
+        'users.username',
+        'users.phone',
+        'users.designation',
+        'departments.name as department_name',
+        'users.role'
+      );
 
       // Return response
-      return Datatables::of( $users )->make(true);
+      return Datatables::of( $users )
+      ->addColumn('action', function($key)
+      {
+        return '
+
+        <a href="' . route('detailUser', ['id' => $key->id]) . '" class="btn btn-xs btn-info">Detail</a>
+        <a href="' . route('editUser', ['id' => $key->id]) . '" class="btn btn-xs btn-primary">Edit</a>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#delete-' . $key->id . '">
+            Delete
+        </button>
+
+        <!-- Modal -->
+        <form method="POST" action="'. route('deleteUser', ['id' => $key->id ]) .'">
+
+        <div class="modal fade" id="delete-' . $key->id . '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Delete Confirmation</h4>
+              </div>
+              <div class="modal-body">
+
+                <p>Are you sure you want to delete this item? ID: ' . $key->id . '</p>
+                ' . csrf_field() . '
+                <input type="hidden" name="_method" value="DELETE">
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-danger">Confirm Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        </form>
+        <!-- Modal -->
+        ';
+      })
+      ->editColumn('role',
+      '@if( $role == "admin" )
+      <span class="btn btn-xs btn-success">{{ ucwords($role) }}</span>
+      @else
+      <span class="btn btn-xs btn-info">{{ ucwords($role) }}</span>
+      @endif
+      '
+      )
+      ->make(true);
     }
 
     /**
